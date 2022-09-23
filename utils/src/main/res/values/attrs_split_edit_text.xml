@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 密码 验证码输入框-->
+    <declare-styleable name="SplitEditText">
+        <!--边框大小-->
+        <attr name="sev_borderSize" format="dimension" />
+        <!--边框颜色-->
+        <attr name="sev_borderColor" format="color|reference" />
+        <!--圆角大小-->
+        <attr name="sev_corner_size" format="dimension" />
+        <!--分割线大小-->
+        <attr name="sev_divisionLineSize" format="dimension" />
+        <!--分割线颜色-->
+        <attr name="sev_divisionLineColor" format="reference|color" />
+        <!--内容显示为圆的半径-->
+        <attr name="sev_circleRadius" format="dimension" />
+        <!--输入内容数量-->
+        <attr name="sev_contentNumber" format="integer" />
+        <!--输入内容显示样式-->
+        <attr name="sev_contentShowMode" format="enum">
+            <!--显示成密码圆-->
+            <enum name="password" value="1" />
+            <!--显示成文本-->
+            <enum name="text" value="2" />
+        </attr>
+        <!--单个输入框和下划线样式下,每个输入框之间的间距-->
+        <attr name="sev_spaceSize" format="dimension" />
+        <!--输入框样式-->
+        <attr name="sev_inputBoxStyle" format="enum">
+            <!--输入框整体相连的样式-->
+            <enum name="connectBox" value="1" />
+            <!--单个输入框样式-->
+            <enum name="singleBox" value="2" />
+            <!--下划线样式-->
+            <enum name="underline" value="3" />
+            <!--下划线样式-->
+            <enum name="middleLine" value="4" />
+        </attr>
+        <!--密码字体颜色-->
+        <attr name="android:textColor" />
+        <!--密码字体大小-->
+        <attr name="android:textSize" />
+        <!--输入框是否是正方形-->
+        <attr name="sev_inputBoxSquare" format="boolean" />
+        <!--光标宽度-->
+        <attr name="sev_cursorWidth" format="dimension" />
+        <!--光标高度-->
+        <attr name="sev_cursorHeight" format="dimension" />
+        <!--光标颜色-->
+        <attr name="sev_cursorColor" format="color|reference" />
+        <!--光标闪烁时长-->
+        <attr name="sev_cursorDuration" format="integer" />
+        <!--下划线输入框样式下,下划线正常的颜色-->
+        <attr name="sev_underlineNormalColor" format="reference|color" />
+        <!--下划线输入框样式下,下划线获取焦点时颜色-->
+        <attr name="sev_underlineFocusColor" format="reference|color" />
+        <!--线段宽度-->
+        <attr name="sev_lineWidth" format="dimension" />
+    </declare-styleable>
+</resources>

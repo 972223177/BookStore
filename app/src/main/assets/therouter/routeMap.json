@@ -1,0 +1,9 @@
+[
+  {
+    "path": "https://book.com/home",
+    "className": "com.ly.book.BookActivity",
+    "action": "",
+    "description": "",
+    "params": {}
+  }
+]

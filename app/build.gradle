@@ -1,0 +1,83 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id("kotlin-kapt")
+    id("therouter")
+    id("dagger.hilt.android.plugin")
+}
+
+android {
+
+    namespace 'com.ly.bookstore'
+    compileSdk Config.compileSdk
+
+    defaultConfig {
+        applicationId "com.ly.bookstore"
+        minSdk Config.minSdk
+        targetSdk Config.targetSdk
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary true
+        }
+    }
+
+    signingConfigs {
+        release {
+            storeFile file("${project.rootDir.path}/ly.jks")
+            storePassword '123987'
+            keyAlias 'ly'
+            keyPassword '123987'
+        }
+        debug {
+            storeFile file("${project.rootDir.path}/ly.jks")
+            storePassword '123987'
+            keyAlias 'ly'
+            keyPassword '123987'
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            signingConfig signingConfigs.debug
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
+}
+kapt {
+    useBuildCache = true
+    correctErrorTypes = true
+}
+dependencies {
+    implementation(Config.deps.splashScreen)
+    implementation(Config.deps.hilt)
+    kapt(Config.kapts.hilt)
+    implementation(Config.deps.theRouter)
+    kapt(Config.deps.theRouter)
+    implementation project(path: ':book')
+    implementation project(path: ':common')
+}
