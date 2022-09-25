@@ -33,7 +33,7 @@ class Config {
             hilt                : "com.google.dagger:hilt-android:$hiltVersion",
 
             roomRuntime         : "androidx.room:room-runtime:$roomVersion",
-            roomKtx             : "androidx.room:room-compiler:$roomVersion",
+            roomKtx             : "androidx.room:room-ktx:$roomVersion",
             roomPaging          : "androidx.room:room-paging:$roomVersion",
 
             immersionbar        : "com.geyifeng.immersionbar:immersionbar:$immersionBarVersion",

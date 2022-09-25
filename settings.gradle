@@ -14,7 +14,9 @@ dependencyResolutionManagement {
 }
 rootProject.name = "BookStore"
 include ':app'
-include ':utils'
-include ':book'
+include ':base_utils'
+include ':feature_book'
 
-include ':common'
+include ':core-common'
+include ':core-model'
+include ':core-db'

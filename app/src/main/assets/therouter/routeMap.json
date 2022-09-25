@@ -5,5 +5,12 @@
     "action": "",
     "description": "",
     "params": {}
+  },
+  {
+    "path": "Book//ComposeMain",
+    "className": "com.ly.book.BookActivity",
+    "action": "",
+    "description": "",
+    "params": {}
   }
 ]

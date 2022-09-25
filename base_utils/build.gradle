@@ -1,0 +1,68 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+}
+
+android {
+    compileSdk Config.compileSdk
+
+    defaultConfig {
+        minSdk Config.minSdk
+        targetSdk Config.targetSdk
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    buildFeatures {
+        viewBinding true
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    lintOptions {
+        checkDependencies true
+    }
+}
+
+dependencies {
+
+    implementation(Config.deps.coreKtx)
+    implementation(Config.deps.appcompat)
+    implementation(Config.deps.material)
+    implementation(Config.deps.lifecycleRuntimeKtx)
+    //immersionbar
+    api(Config.deps.immersionbar)
+    api(Config.deps.immersionbarKtx)
+    //gilide
+    api(Config.deps.glide)
+    kapt(Config.kapts.glide)
+    //okdownload
+    api(Config.deps.okDownload)
+    api(Config.deps.okDownloadSqlite)
+    api(Config.deps.okDownloadOkhttp)
+    api(Config.deps.okDownloadFileLoader)
+    api(Config.deps.okDownloadKtx)
+
+    api(Config.deps.okhttp)
+
+    //tbs webview
+    api(Config.deps.tencentTbs)
+
+    implementation(Config.deps.coroutineAndroid)
+
+    testImplementation(Config.deps.junit)
+    androidTestImplementation(Config.deps.testJunit)
+    androidTestImplementation(Config.deps.espressoCore)
+}

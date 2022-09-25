@@ -5,6 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.ly.common.logic.ConfigHelper
 import com.ly.common.route.goHome
+import com.ly.utils.base.launchAppScope
+import kotlinx.coroutines.delay
 
 
 class MainActivity : ComponentActivity() {
@@ -14,8 +16,11 @@ class MainActivity : ComponentActivity() {
         splashScreen.setKeepOnScreenCondition {
             true
         }
-        ConfigHelper.init()
-        goHome()
-        finish()
+        launchAppScope {
+            delay(150L)
+            ConfigHelper.init()
+            goHome()
+            finish()
+        }
     }
 }
