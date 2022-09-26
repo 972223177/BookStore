@@ -17,14 +17,15 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.ly.book.R
+import com.ly.book.theme.colorBlack242126
+import com.ly.book.theme.colorGreen00D6D8
+import com.ly.book.theme.colorGreen00D6D8_10
 import com.ly.book.utils.zeroBtnElevation
 
 @Composable
@@ -49,7 +50,7 @@ fun SignUpPage(viewModel: LoginViewModel, navToMain: () -> Unit) {
                     Text(
                         "注册",
                         fontSize = 24.sp,
-                        color = colorResource(R.color.black242126),
+                        color = colorBlack242126,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(start = 20.dp, top = 70.dp)
                     )
@@ -113,13 +114,13 @@ private fun SignUpBtn(modifier: Modifier = Modifier, onClick: () -> Unit) {
             .fillMaxWidth(),
         onClick = onClick,
         shape = RoundedCornerShape(90.dp),
-        colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(id = R.color.green00D6D8_10)),
+        colors = ButtonDefaults.buttonColors(backgroundColor = colorGreen00D6D8_10),
         elevation = zeroBtnElevation
     ) {
         Text(
             text = "注册",
             fontSize = 17.sp,
-            color = colorResource(id = R.color.green00D6D8),
+            color = colorGreen00D6D8,
             fontWeight = FontWeight.Bold
         )
     }

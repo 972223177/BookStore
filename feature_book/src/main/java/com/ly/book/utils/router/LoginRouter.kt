@@ -27,7 +27,7 @@ fun NavGraphBuilder.loginGraph(navController: NavHostController) {
             }
             val viewModel = hiltViewModel<LoginViewModel>(parentEntry)
             SignInPage(viewModel, navToMain = {
-                navController.navToMainPage(NavRoute.Login.SignIn)
+                navController.popLoginMain()
             }, initFirst = {
                 viewModel.initRememberInfo()
             })
@@ -38,16 +38,12 @@ fun NavGraphBuilder.loginGraph(navController: NavHostController) {
             }
             val viewModel = hiltViewModel<LoginViewModel>(parentEntry)
             SignUpPage(viewModel) {
-                navController.navToMainPage(NavRoute.Login.SignUp)
+                navController.popLoginMain()
             }
         }
     }
 }
 
-private fun NavHostController.navToMainPage(popRoute:String) {
-    navigate(NavRoute.PageMain) {
-        popUpTo(popRoute) {
-            inclusive = true
-        }
-    }
+private fun NavHostController.popLoginMain() {
+    popBackStack(NavRoute.Login.Main,true)
 }

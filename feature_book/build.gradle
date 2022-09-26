@@ -57,6 +57,8 @@ dependencies {
     implementation(Config.deps.systemUiController)
     implementation(Config.deps.viewModelCompose)
     implementation(Config.deps.hilt)
+    implementation(Config.deps.accompanistPager)
+    implementation(Config.deps.accompanistPagerIndicator)
     kapt(Config.kapts.hilt)
     kapt(Config.kapts.theRouter)
     androidTestImplementation(Config.deps.composeUiTestJunit)

@@ -43,7 +43,7 @@ class BookActivity : AppCompatActivity() {
             CompositionLocalProvider(LocalNavController provides navController) {
                 NavHost(
                     navController,
-                    startDestination = if (LocalLoginLogic.isLogin) NavRoute.PageMain else NavRoute.PageLoginMain
+                    startDestination = NavRoute.PageMain
                 ) {
                     composable(NavRoute.PageWaiting) {
                         WaitingPage()

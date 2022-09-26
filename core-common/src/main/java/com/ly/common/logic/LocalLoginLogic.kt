@@ -39,6 +39,7 @@ object LocalLoginLogic {
                 .setId(existedUser.id)
                 .build()
         }
+        isLogin = true
         return true to ""
     }
 
@@ -99,11 +100,12 @@ object LocalLoginLogic {
     }
 
 
-    fun handleLogout() {
+    fun handleLogout(success: () -> Unit) {
         launchAppScope {
             isLogin = false
             currentUser = UserModel.defaultInstance
             clearDiskLoginInfo()
+            success()
         }
 
 

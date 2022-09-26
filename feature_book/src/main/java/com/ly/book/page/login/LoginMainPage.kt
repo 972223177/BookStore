@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.sp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.ly.book.R
 import com.ly.book.page.route.NavRoute
+import com.ly.book.theme.colorGreen00D6D8
 import com.ly.book.utils.LocalNavController
 import com.ly.book.utils.zeroBtnElevation
 
@@ -40,7 +41,7 @@ fun LoginMainPage() {
             systemUiController.setSystemBarsColor(color = Color.Transparent, darkIcons = true)
         }
     })
-    Scaffold(backgroundColor = colorResource(id = R.color.green00D6D8)) {
+    Scaffold(backgroundColor = colorGreen00D6D8) {
         Box(
             modifier = Modifier
                 .padding(it)

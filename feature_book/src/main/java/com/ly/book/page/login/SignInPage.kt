@@ -29,7 +29,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -39,7 +38,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.ly.book.R
+import com.ly.book.theme.colorBlack242126
+import com.ly.book.theme.colorGrayAFC1C4
+import com.ly.book.theme.colorGreen00D6D8
+import com.ly.book.theme.colorGreen00D6D8_10
 import com.ly.book.utils.rippleClick
 import com.ly.book.utils.zeroBtnElevation
 
@@ -66,7 +68,7 @@ fun SignInPage(viewModel: LoginViewModel, navToMain: () -> Unit = {}, initFirst:
                     Text(
                         "登录",
                         fontSize = 24.sp,
-                        color = colorResource(R.color.black242126),
+                        color = colorBlack242126,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(start = 20.dp, top = 70.dp)
                     )
@@ -149,17 +151,15 @@ private fun SignInMenu(
                     onRemember(it)
                 },
                 colors = CheckboxDefaults.colors(
-                    checkedColor = colorResource(id = R.color.green00D6D8),
-                    uncheckedColor = colorResource(
-                        id = R.color.grayAFC1C4
-                    )
+                    checkedColor = colorGreen00D6D8,
+                    uncheckedColor = colorGrayAFC1C4
                 ),
                 modifier = Modifier.scale(0.7f)
             )
             Text(
                 text = "记住密码",
                 fontSize = 12.sp,
-                color = colorResource(id = R.color.grayAFC1C4),
+                color = colorGrayAFC1C4,
                 modifier = Modifier.rippleClick {
                     rememberMe = !rememberMe
                 }
@@ -174,7 +174,7 @@ private fun SignInMenu(
             Text(
                 text = "忘记密码",
                 fontSize = 12.sp,
-                color = colorResource(id = R.color.grayAFC1C4),
+                color = colorGrayAFC1C4,
             )
         }
 
@@ -189,13 +189,13 @@ private fun SignInBtn(modifier: Modifier = Modifier, onClick: () -> Unit) {
             .fillMaxWidth(),
         onClick = onClick,
         shape = RoundedCornerShape(90.dp),
-        colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(id = R.color.green00D6D8_10)),
+        colors = ButtonDefaults.buttonColors(backgroundColor = colorGreen00D6D8_10),
         elevation = zeroBtnElevation
     ) {
         Text(
             text = "登录",
             fontSize = 17.sp,
-            color = colorResource(id = R.color.green00D6D8),
+            color = colorGreen00D6D8,
             fontWeight = FontWeight.Bold
         )
     }
@@ -219,10 +219,8 @@ fun SignProtocol(
                 onChecked(it)
             },
             colors = CheckboxDefaults.colors(
-                checkedColor = colorResource(id = R.color.green00D6D8),
-                uncheckedColor = colorResource(
-                    id = R.color.grayAFC1C4
-                )
+                checkedColor = colorGreen00D6D8,
+                uncheckedColor = colorGrayAFC1C4
             ),
             modifier = Modifier.scale(0.7f)
         )
