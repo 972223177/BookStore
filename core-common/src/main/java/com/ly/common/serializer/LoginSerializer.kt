@@ -6,6 +6,7 @@ import androidx.datastore.core.Serializer
 import androidx.datastore.dataStore
 import com.ly.utils.base.appContext
 import com.ly.utils.common.catchOrNull
+import kotlinx.coroutines.flow.Flow
 import login.LoginInfoOuterClass.LoginInfo
 import java.io.InputStream
 import java.io.OutputStream
@@ -29,6 +30,8 @@ internal val Context.loginDataStore: DataStore<LoginInfo> by dataStore(
 )
 
 internal val loginInfo: DataStore<LoginInfo> get() = appContext.loginDataStore
+
+val loginFlow: Flow<LoginInfo> get() = loginInfo.data
 
 
 

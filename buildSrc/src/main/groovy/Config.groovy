@@ -20,6 +20,7 @@ class Config {
     static hiltVersion = "2.42"
     static roomVersion = "2.4.3"
     static accompanistPagerVersion = "0.19.0"
+    static coilVersion = "2.2.1"
 
     static deps = [
             composeUi                : "androidx.compose.ui:ui:$composeVersion",
@@ -45,6 +46,7 @@ class Config {
             viewModelCompose         : "androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1",
             hiltNavCompose           : "androidx.hilt:hilt-navigation-compose:1.0.0",
             glide                    : "com.github.bumptech.glide:glide:$glideVersion",
+            coil                     : "io.coil-kt:coil-compose:$coilVersion",
 
             okDownload               : "com.liulishuo.okdownload:okdownload:$okDownloadVersion",
             okDownloadSqlite         : "com.liulishuo.okdownload:sqlite:$okDownloadVersion",

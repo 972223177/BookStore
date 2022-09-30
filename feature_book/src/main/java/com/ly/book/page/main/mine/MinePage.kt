@@ -16,7 +16,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.BottomSheetScaffold
-import androidx.compose.material.BottomSheetScaffoldState
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.material.rememberBottomSheetScaffoldState
@@ -41,8 +40,6 @@ import com.ly.book.theme.colorGreen00D6D8
 import com.ly.book.utils.PreviewProvideNavLocal
 import com.ly.book.utils.rippleClick
 import com.ly.book.utils.unRippleClick
-import com.ly.common.logic.LocalLoginLogic
-import com.ly.core_model.MainMenuItem
 import kotlinx.coroutines.launch
 
 @Composable
@@ -55,9 +52,20 @@ fun MinePage(viewModel: MainViewModel) {
             (context.resources.displayMetrics.heightPixels * (406f / 812)).toDp()
         }
     }
+    val scope = rememberCoroutineScope()
     BottomSheetScaffold(scaffoldState = scaffoldState, sheetContent = {
-        BottomSheetContent(scaffoldState, logout = {
-            viewModel.changeBottomTab(MainMenuItem.Home.ordinal)
+        BottomSheetContent(logout = {
+            viewModel.logout()
+        }, onSwitch = {
+            scope.launch {
+                with(scaffoldState.bottomSheetState) {
+                    if (isCollapsed) {
+                        expand()
+                    } else {
+                        collapse()
+                    }
+                }
+            }
         })
     }, sheetPeekHeight = peekHeight) {
         Column(
@@ -65,15 +73,28 @@ fun MinePage(viewModel: MainViewModel) {
                 .padding(it)
                 .statusBarsPadding()
         ) {
-
+            Text(
+                text = "我的",
+                fontSize = 44.sp,
+                fontWeight = FontWeight.Bold,
+                color = colorBlack242126,
+                modifier = Modifier.padding(top = 20.dp, start = 20.dp)
+            )
+            UserInfoPanel(modifier = Modifier.padding(20.dp))
         }
     }
 }
 
 @Composable
-private fun BottomSheetContent(scaffoldState: BottomSheetScaffoldState, logout: () -> Unit) {
+private fun UserInfoPanel(modifier: Modifier) {
+    Box(modifier = modifier.fillMaxWidth()) {
+
+    }
+}
+
+@Composable
+private fun BottomSheetContent(logout: () -> Unit, onSwitch: () -> Unit) {
     val scrollState = rememberScrollState()
-    val scope = rememberCoroutineScope()
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -86,46 +107,36 @@ private fun BottomSheetContent(scaffoldState: BottomSheetScaffoldState, logout: 
                 .height(6.dp)
                 .width(50.dp)
                 .background(color = colorGrayAFC1C4, shape = RoundedCornerShape(20.dp))
-                .unRippleClick {
-                    scope.launch {
-                        with(scaffoldState.bottomSheetState) {
-                            if (isCollapsed) {
-                                expand()
-                            } else {
-                                collapse()
-                            }
-                        }
-                    }
-                }
+                .unRippleClick(onSwitch)
         )
         MenuCategoryTitle(
             modifier = Modifier.padding(top = 30.dp, bottom = 10.dp, start = 20.dp),
-            title = "My Purchases"
+            title = "我的订阅"
         )
-        MenuItem(title = "Update", suffix = "0", suffixColor = colorGreen00D6D8) {}
-        MenuItem(title = "Book", suffix = "32") {}
-        MenuItem(title = "Audio Book", suffix = "13") {
+        MenuItem(title = "已更新", suffix = "0", suffixColor = colorGreen00D6D8) {}
+        MenuItem(title = "所有书籍", suffix = "0") {}
+        MenuItem(title = "有声读物", suffix = "0") {
 
         }
         MenuCategoryTitle(
             modifier = Modifier.padding(top = 40.dp, bottom = 10.dp, start = 20.dp),
-            title = "Account"
+            title = "账号"
         )
-        MenuItem(title = "Edit Profile") {
+        MenuItem(title = "修改信息") {
 
         }
-        MenuItem(title = "Share you profile") {
+        MenuItem(title = "分享你的用户卡片") {
 
         }
 
-        MenuItem(title = "Log out") {
-            LocalLoginLogic.handleLogout(logout)
-        }
+        MenuItem(title = "退出登录", onClick = logout)
+
+        Box(modifier = Modifier.height(30.dp))
     }
 }
 
 @Composable
-fun MenuCategoryTitle(modifier: Modifier, title: String) {
+private fun MenuCategoryTitle(modifier: Modifier, title: String) {
     Text(
         text = title,
         fontSize = 12.sp,

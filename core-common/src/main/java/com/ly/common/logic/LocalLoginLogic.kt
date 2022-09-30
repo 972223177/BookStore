@@ -1,15 +1,15 @@
 package com.ly.common.logic
 
+import android.util.Log
 import com.ly.common.model_ext.toModel
 import com.ly.common.serializer.loginInfo
 import com.ly.common.serializer.rememberAccount
-import com.ly.core_db.user.User
-import com.ly.core_db.user.UserDbHelper
+import com.ly.core_db.bean.UserBean
+import com.ly.core_db.helpers.UserDbHelper
 import com.ly.core_model.UserModel
-import com.ly.utils.base.launchAppScope
-import com.ly.utils.common.catch
 import com.ly.utils.common.catchOrNull
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
@@ -17,12 +17,7 @@ import kotlinx.coroutines.flow.map
 @Suppress("unused")
 object LocalLoginLogic {
 
-    var currentUser: UserModel = UserModel.defaultInstance
-        private set
-
-    var isLogin: Boolean = false
-        private set
-
+    private const val TAG = "LocalLoginLogic"
 
     suspend fun login(
         account: String,
@@ -33,13 +28,12 @@ object LocalLoginLogic {
         if (existedUser.pwd != pwd) return false to "密码错误"
         val updatedUser = existedUser.copy(lastUpdateTime = System.currentTimeMillis())
         UserDbHelper.update(updatedUser)
-        updateDiskRememberInfo(if (rememberMe) existedUser.id else 0L)
+        updateDiskRememberInfo(if (rememberMe) existedUser.id else 0)
         loginInfo.updateData {
             it.toBuilder()
                 .setId(existedUser.id)
                 .build()
         }
-        isLogin = true
         return true to ""
     }
 
@@ -49,12 +43,12 @@ object LocalLoginLogic {
         if (existedUser != null) {
             return false to "用户已存在"
         }
-        val user = User(account = account, name = name, pwd = pwd)
-        val addResult = UserDbHelper.add(user)
+        val userBean = UserBean(account = account, name = name, pwd = pwd, createTime = System.currentTimeMillis())
+        val addResult = UserDbHelper.add(userBean)
         if (!addResult) {
             return false to "注册失败"
         }
-        updateDiskRememberInfo(0L)
+        updateDiskRememberInfo(0)
         return true to ""
     }
 
@@ -62,65 +56,33 @@ object LocalLoginLogic {
         val rememberId = catchOrNull {
             rememberAccount.data.firstOrNull()
         }
-        if (rememberId == null || rememberId.userId == 0L) {
+        if (rememberId == null || rememberId.userId == 0) {
             return "" to ""
         }
         val user = UserDbHelper.query(rememberId.userId) ?: return "" to ""
         return user.account to user.pwd
     }
 
-
-    /**
-     * 获取用户信息的流
-     */
-    fun listenUserChanged(id: Long = currentUser.id): Flow<UserModel?> =
-        UserDbHelper.observeUser(id).map {
-            it?.toModel()
-        }
-
-    internal suspend fun init() {
-        catch {
-            val info = loginInfo.data.firstOrNull()
-            if (info != null && info.id > 0) {
-                val user = UserDbHelper.query(info.id)
-                if (user != null) {
-                    isLogin = true
-                    currentUser = UserModel(
-                        id = user.id,
-                        name = user.name,
-                        lastUpdateTime = user.lastUpdateTime
-                    )
-                } else {
-                    currentUser = UserModel.defaultInstance
-                    isLogin = false
-                    clearDiskLoginInfo()
-                }
-            }
-        }
-    }
+    fun listenUserFromDb(id: Int): Flow<UserModel?> =
+        UserDbHelper.observeUser(id)
+            .catch { e -> Log.e(TAG, "listenUserChanged error = ${e.message}", e) }
+            .map { it?.toModel() }
 
 
-    fun handleLogout(success: () -> Unit) {
-        launchAppScope {
-            isLogin = false
-            currentUser = UserModel.defaultInstance
-            clearDiskLoginInfo()
-            success()
-        }
-
-
+    suspend fun handleLogout() {
+        clearDiskLoginInfo()
     }
 
 
     private suspend fun clearDiskLoginInfo() {
         loginInfo.updateData {
             it.toBuilder()
-                .setId(0L)
+                .setId(0)
                 .build()
         }
     }
 
-    private suspend fun updateDiskRememberInfo(id: Long) {
+    private suspend fun updateDiskRememberInfo(id: Int) {
         rememberAccount.updateData {
             it.toBuilder()
                 .setUserId(id)
@@ -131,7 +93,7 @@ object LocalLoginLogic {
 
     @Suppress("unused")
     suspend fun isLoginSuspend(): Boolean = loginInfo.data.first().run {
-        if (id == 0L) return@run false
+        if (id == 0) return@run false
         UserDbHelper.query(id) ?: return@run false
         true
     }

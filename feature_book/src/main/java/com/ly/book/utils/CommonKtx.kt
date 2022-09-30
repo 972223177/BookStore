@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.ly.book.page.route.NavRoute
-import com.ly.common.logic.LocalLoginLogic
+import com.ly.common.utils.UserHelper
 import com.ly.utils.base.appContext
 import com.ly.utils.base.launchAppScope
 
@@ -43,7 +43,7 @@ val zeroBtnElevation: ButtonElevation
     get() = ButtonDefaults.elevation(0.dp, 0.dp, 0.dp, 0.dp, 0.dp)
 
 inline fun checkLogin(navController: NavHostController, logged: () -> Unit) {
-    if (LocalLoginLogic.isLogin) {
+    if (UserHelper.isLogin) {
         logged()
     } else {
         navController.navigate(NavRoute.PageLoginMain)
@@ -51,7 +51,7 @@ inline fun checkLogin(navController: NavHostController, logged: () -> Unit) {
 }
 
 /**
- * 预览专用
+ * 预览专用,补一个没用的navController
  */
 @Composable
 fun PreviewProvideNavLocal(block: @Composable () -> Unit) {

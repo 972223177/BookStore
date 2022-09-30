@@ -1,6 +1,7 @@
-package com.ly.common.logic
+package com.ly.common.utils
 
 import api.SettingOuterClass.Setting
+import com.ly.common.logic.LocalLoginLogic
 import com.ly.common.serializer.settingDataStore
 import com.ly.utils.base.appContext
 import com.ly.utils.base.launchAppScope
@@ -29,7 +30,7 @@ object ConfigHelper {
     fun init() {
         runBlocking {
             isDarkMode = settingFlow.first().isDarkMode
-            LocalLoginLogic.init()
+            UserHelper.init()
         }
     }
 
