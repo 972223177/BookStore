@@ -14,13 +14,7 @@ import com.tencent.smtt.export.external.TbsCoreSettings
 import com.tencent.smtt.export.external.interfaces.IX5WebSettings
 import com.tencent.smtt.export.external.interfaces.WebResourceRequest
 import com.tencent.smtt.export.external.interfaces.WebResourceResponse
-import com.tencent.smtt.sdk.CookieManager
-import com.tencent.smtt.sdk.MimeTypeMap
-import com.tencent.smtt.sdk.QbSdk
-import com.tencent.smtt.sdk.WebChromeClient
-import com.tencent.smtt.sdk.WebSettings
-import com.tencent.smtt.sdk.WebView
-import com.tencent.smtt.sdk.WebViewClient
+import com.tencent.smtt.sdk.*
 import kotlinx.coroutines.runBlocking
 import okio.ByteString.Companion.encodeUtf8
 import java.io.File
@@ -181,7 +175,7 @@ class WebViewHelper(private val webView: WebView) {
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                 intent.addCategory(Intent.CATEGORY_BROWSABLE)
                 webView.context.startActivity(intent)
-            } catch (e: Exception) {
+            } catch (_: Exception) {
 
             }
         }

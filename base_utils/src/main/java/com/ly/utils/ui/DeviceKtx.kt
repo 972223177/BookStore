@@ -5,7 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.telephony.TelephonyManager
-import java.util.Locale
+import java.util.*
 
 /**
  * 是否是模拟器，也可以补上是否有传感器之类的，或者说cpu型号是否有intel、amd这种字眼
