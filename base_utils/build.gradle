@@ -42,6 +42,9 @@ dependencies {
     implementation(Config.deps.appcompat)
     implementation(Config.deps.material)
     implementation(Config.deps.lifecycleRuntimeKtx)
+    api(Config.deps.kotlinSerialization)
+    api(Config.deps.kotlinCoroutine)
+    api(Config.deps.kotlinReflect)
     //immersionbar
     api(Config.deps.immersionbar)
     api(Config.deps.immersionbarKtx)

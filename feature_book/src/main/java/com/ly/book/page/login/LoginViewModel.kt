@@ -5,102 +5,125 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ly.book.utils.toast
-import com.ly.common.logic.LocalLoginLogic
+import com.ly.common.utils.UserHelper
+import com.ly.core_model.UserModel
+import com.ly.core_request.use_case.UserUseCase
+import com.ly.utils.common.ifNull
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor() : ViewModel() {
-    private var account = ""
-    private var password = ""
-    private var name = ""
-    var protocolAccept by mutableStateOf(false)
-    var rememberMe by mutableStateOf(false)
+class LoginViewModel @Inject constructor(
+    private val loginUseCase: UserUseCase
+) : ViewModel() {
 
-    var rememberAccount by mutableStateOf("")
-    var rememberPwd by mutableStateOf("")
+    var state by mutableStateOf(LoginState())
+        private set
 
-    fun initRememberInfo(){
+    private val _event = Channel<LoginEvent>(Channel.BUFFERED)
+    val event = _event.receiveAsFlow()
+
+    init {
         viewModelScope.launch {
-            val info = LocalLoginLogic.getRememberInfo()
+            val info = UserHelper.getRememberInfo()
             if (info.first.isNotEmpty() && info.second.isNotEmpty()) {
-                rememberAccount = info.first
-                rememberPwd = info.second
-                account = info.first
-                password = info.second
-                rememberMe = true
+                state = state.copy(
+                    account = info.first,
+                    pwd = info.second,
+                    rememberMe = true
+                )
             }
         }
     }
 
-    fun updateAccount(value: String) {
-        account = value
+    fun dispatch(action: LoginAction) {
+        when (action) {
+            LoginAction.DeleteInfo -> deleteInfo()
+            LoginAction.Login -> login()
+            LoginAction.Register -> register()
+            is LoginAction.UpdateAccount -> updateAccount(action.value)
+            is LoginAction.UpdateName -> updateName(action.value)
+            is LoginAction.UpdatePwd -> updatePwd(action.value)
+            is LoginAction.UpdateRememberMe -> updateRememberMe(action.value)
+            is LoginAction.UpdateProtocolAccept -> updateProtocolAccept(action.value)
+        }
     }
 
-    fun updatePwd(value: String) {
-        password = value
+    private fun updateAccount(value: String) {
+        state = state.copy(account = value)
     }
 
-    fun updateName(value: String) {
-        name = value
+    private fun updatePwd(value: String) {
+        state = state.copy(pwd = value)
     }
 
-    fun login(success: () -> Unit) {
+    private fun updateName(value: String) {
+        state = state.copy(name = value)
+    }
+
+    private fun updateRememberMe(value: Boolean) {
+        state = state.copy(rememberMe = value)
+    }
+
+    private fun updateProtocolAccept(value: Boolean) {
+        state = state.copy(protocolAccept = value)
+    }
+
+    private fun login() {
         if (!checkSignInfo()) return
         viewModelScope.launch {
             if (loginSuspend()) {
-                success()
+                _event.send(LoginEvent.LoginSuccess)
             }
         }
     }
 
     private suspend fun loginSuspend(): Boolean {
         val result =
-            LocalLoginLogic.login(account = account, pwd = password, rememberMe = rememberMe)
-        if (result.first) return true
-        toast(result.second)
+            loginUseCase.login(account = state.account, pwd = state.pwd)
+        if (result.success) {
+            with(state) {
+                UserHelper.rememberMe(if (rememberMe) account else "", if (rememberMe) pwd else "")
+            }
+            UserHelper.cacheLoginInfo(result.data.ifNull { UserModel() })
+            return true
+        }
+        _event.send(LoginEvent.ErrorMsg(result.msg))
         return false
     }
 
-    fun register(success: () -> Unit) {
+    private fun register() {
         if (!checkSignInfo(containName = true)) return
         viewModelScope.launch {
-            val result = LocalLoginLogic.register(name = name, account = account, pwd = password)
-            if (result.first) {
+            val result =
+                loginUseCase.register(name = state.name, account = state.account, pwd = state.pwd)
+            if (result.success) {
                 val loginResult = loginSuspend()
                 if (loginResult) {
-                    success()
+                    _event.send(LoginEvent.RegisterSuccess)
                 }
             } else {
-                toast(result.second)
+                _event.send(LoginEvent.ErrorMsg(result.msg))
             }
         }
     }
 
-    private fun checkSignInfo(containName: Boolean = false): Boolean {
-        if (!protocolAccept) {
-            toast("请先同意协议")
-            return false
+    private fun checkSignInfo(containName: Boolean = false): Boolean = with(state) {
+        val msg = when {
+            !protocolAccept -> "请先同意协议"
+            name.isEmpty() && containName -> "请先输入昵称"
+            account.isEmpty() -> "请先输入邮箱"
+            pwd.isEmpty() -> "请先输入密码"
+            else -> ""
         }
-        if (name.isEmpty() && containName) {
-            toast("请先输入昵称")
-            return false
-        }
-        if (account.isEmpty()) {
-            toast("请先输入邮箱")
-            return false
-        }
-        if (password.isEmpty()) {
-            toast("请先输入密码")
-            return false
-        }
-        return true
+        _event.trySend(LoginEvent.ErrorMsg(msg))
+        msg.isEmpty()
     }
 
-    fun deleteSignInInfo() {
-        account = ""
-        password = ""
+    private fun deleteInfo() {
+        state = LoginState()
     }
 }

@@ -1,4 +1,4 @@
-package com.ly.book.page
+package com.ly.book.page.other
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

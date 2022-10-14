@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'com.google.protobuf'
+    id 'kotlinx-serialization'
 }
 
 android {
@@ -67,9 +68,8 @@ dependencies {
 
     api(Config.deps.dataStore)
     api project(path: ':base_utils')
-    api project(path: ':core-model')
     api(Config.deps.protobufJavaUtil)
     kapt(Config.kapts.theRouter)
-    implementation project(path: ':core-db')
+    api project(path: ':core-request')
     implementation(Config.deps.theRouter)
 }

@@ -1,30 +1,26 @@
 package com.ly.book.page.main
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.ly.common.logic.LocalLoginLogic
 import com.ly.core_model.MainMenuItem
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor() : ViewModel() {
 
-    private val _bottomIndex = MutableStateFlow(-1)
-    val bottomIndex: StateFlow<Int> = _bottomIndex
+    private val _mainEvent = Channel<MainEvent>(Channel.BUFFERED)
+    val mainEvent = _mainEvent.receiveAsFlow()
 
-    @Suppress("MemberVisibilityCanBePrivate")
-    fun changeBottomTab(index: Int) {
-        _bottomIndex.value = index
-    }
-
-    fun logout() {
-        viewModelScope.launch {
-            LocalLoginLogic.handleLogout()
-            changeBottomTab(MainMenuItem.Home.ordinal)
+    fun dispatch(action: MainAction) {
+        when (action) {
+            is MainAction.SwitchBottomBar -> changeBottomTab(action.target)
         }
     }
+
+    private fun changeBottomTab(item: MainMenuItem) {
+        _mainEvent.trySend(MainEvent.BottomBarChanged(item.ordinal))
+    }
+
 }

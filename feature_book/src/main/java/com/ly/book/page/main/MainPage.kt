@@ -5,29 +5,14 @@ package com.ly.book.page.main
 import android.graphics.Bitmap
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Favorite
-import androidx.compose.material.icons.rounded.Home
-import androidx.compose.material.icons.rounded.Menu
-import androidx.compose.material.icons.rounded.Person
-import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -71,7 +56,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @Composable
-fun MainPage(viewModel: MainViewModel = hiltViewModel()) {
+fun MainPage(viewModel: MainViewModel = hiltViewModel(), goPicPre: (List<String>) -> Unit) {
     val pagerState = rememberPagerState()
     val scope = rememberCoroutineScope()
     val menuItems = remember {
@@ -79,9 +64,10 @@ fun MainPage(viewModel: MainViewModel = hiltViewModel()) {
     }
     val navController = LocalNavController.current
     LaunchedEffect(key1 = viewModel, block = {
-        viewModel.bottomIndex.collectLatest {
-            if (it < 0) return@collectLatest
-            pagerState.scrollToPage(it)
+        viewModel.mainEvent.collectLatest {
+            when (it) {
+                is MainEvent.BottomBarChanged -> pagerState.scrollToPage(it.index)
+            }
         }
     })
     Scaffold(bottomBar = {
@@ -159,7 +145,7 @@ fun MainPage(viewModel: MainViewModel = hiltViewModel()) {
                 MainMenuItem.Feed -> FeedPage()
                 MainMenuItem.Search -> SearchPage()
                 MainMenuItem.Favorite -> FavoritePage()
-                MainMenuItem.Mine -> MinePage(viewModel)
+                MainMenuItem.Mine -> MinePage(viewModel, goPicPre = goPicPre)
             }
         }
     }
@@ -298,6 +284,6 @@ fun RowScope.BottomMineItem(currentIndex: Int, index: Int, onClick: (Int) -> Uni
 @Composable
 fun MainPagePre() {
     PreviewProvideNavLocal {
-        MainPage()
+        MainPage(goPicPre = {})
     }
 }

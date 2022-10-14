@@ -4,8 +4,13 @@ class Config {
     static minSdk = 21
     static targetSdk = 33
 
+    static ktVersion = "1.7.10"
+    static kotlinSerializationVersion = "1.4.0"
+    static kotlinCoroutineVersion = "1.6.4"
     static composeVersion = "1.2.1"
     static composeKtCompileVersion = "1.3.0"
+    static composeConstraintVersion = "1.0.1"
+    static androidXAnnotationVersion = "1.3.0"
     static immersionBarVersion = "3.2.2"
     static glideVersion = "4.13.2"
     static okDownloadVersion = "1.0.7"
@@ -26,14 +31,19 @@ class Config {
             composeUi                : "androidx.compose.ui:ui:$composeVersion",
             composeToolingPre        : "androidx.compose.ui:ui-tooling-preview:$composeVersion",
             composeMaterial          : "androidx.compose.material:material:$composeVersion",
+            composeConstraintLayout  : "androidx.constraintlayout:constraintlayout-compose:$composeConstraintVersion",
             coreKtx                  : "androidx.core:core-ktx:1.8.0",
             lifecycleRuntimeKtx      : "androidx.lifecycle:lifecycle-runtime-ktx:2.5.1",
             activityCompose          : "androidx.activity:activity-compose:1.5.1",
             appcompat                : "androidx.core:core-ktx:1.8.0",
             material                 : "com.google.android.material:material:1.6.1",
+            androidXAnnotation       : "androidx.annotation:annotation:$androidXAnnotationVersion",
             navCompose               : "androidx.navigation:navigation-compose:$navVersion",
             hilt                     : "com.google.dagger:hilt-android:$hiltVersion",
 
+            kotlinSerialization      : "org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinSerializationVersion",
+            kotlinCoroutine          : "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinCoroutineVersion",
+            kotlinReflect            : "org.jetbrains.kotlin:kotlin-reflect:$ktVersion",
             accompanistPager         : "com.google.accompanist:accompanist-pager:$accompanistPagerVersion",
             accompanistPagerIndicator: "com.google.accompanist:accompanist-pager-indicators:$accompanistPagerVersion",
             roomRuntime              : "androidx.room:room-runtime:$roomVersion",
@@ -47,7 +57,7 @@ class Config {
             hiltNavCompose           : "androidx.hilt:hilt-navigation-compose:1.0.0",
             glide                    : "com.github.bumptech.glide:glide:$glideVersion",
             coil                     : "io.coil-kt:coil-compose:$coilVersion",
-
+            lottieCompose            : "com.airbnb.android:lottie-compose:5.2.0",
             okDownload               : "com.liulishuo.okdownload:okdownload:$okDownloadVersion",
             okDownloadSqlite         : "com.liulishuo.okdownload:sqlite:$okDownloadVersion",
             okDownloadOkhttp         : "com.liulishuo.okdownload:okhttp:$okDownloadVersion",
@@ -65,7 +75,7 @@ class Config {
             theRouter                : "cn.therouter:router:$theRouterVersion",
 
 //            dataStoreCore       : "androidx.datastore:datastore-core:$dataStoreVersion",
-            dataStore                : "androidx.datastore:datastore:$dataStoreVersion",
+            dataStore                : "androidx.datastore:datastore-preferences:$dataStoreVersion",
 
             protobufJavaUtil         : "com.google.protobuf:protobuf-java-util:$protobufJavaUtilVersion",
 

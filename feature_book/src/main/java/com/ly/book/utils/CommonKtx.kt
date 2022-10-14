@@ -14,7 +14,7 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.ly.book.page.route.NavRoute
+import com.ly.book.route.NavRoute
 import com.ly.common.utils.UserHelper
 import com.ly.utils.base.appContext
 import com.ly.utils.base.launchAppScope

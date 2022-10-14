@@ -7,6 +7,12 @@ import android.content.Context
 import android.content.ContextWrapper
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
+import kotlinx.serialization.json.Json
+
+val globalJson = Json {
+    ignoreUnknownKeys = true
+    coerceInputValues = true
+}
 
 inline fun <T> T?.ifNull(block: () -> T): T {
     return this ?: block()

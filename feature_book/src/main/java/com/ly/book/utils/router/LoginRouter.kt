@@ -6,11 +6,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.ly.book.page.login.LoginMainPage
-import com.ly.book.page.login.LoginViewModel
-import com.ly.book.page.login.SignInPage
-import com.ly.book.page.login.SignUpPage
-import com.ly.book.page.route.NavRoute
+import com.ly.book.page.login.*
+import com.ly.book.route.NavRoute
 
 
 fun NavGraphBuilder.loginGraph(navController: NavHostController) {
@@ -29,7 +26,7 @@ fun NavGraphBuilder.loginGraph(navController: NavHostController) {
             SignInPage(viewModel, navToMain = {
                 navController.popLoginMain()
             }, initFirst = {
-                viewModel.initRememberInfo()
+                viewModel.dispatch(LoginAction.DeleteInfo)
             })
         }
         composable(NavRoute.Login.SignUp) {
@@ -45,5 +42,5 @@ fun NavGraphBuilder.loginGraph(navController: NavHostController) {
 }
 
 private fun NavHostController.popLoginMain() {
-    popBackStack(NavRoute.Login.Main,true)
+    popBackStack(NavRoute.Login.Main, true)
 }
