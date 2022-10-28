@@ -3,7 +3,6 @@ package com.ly.book.utils
 import android.app.Activity
 import android.content.ContextWrapper
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.ProvidedValue
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
@@ -16,14 +15,4 @@ fun findActivity(): Activity {
     return (if (context is ContextWrapper) context.baseContext as? Activity else null)
         ?: throw IllegalStateException("Please make sure root attached activity")
 }
-
-object LocalNavController {
-    private val LocalNavController = compositionLocalOf<NavHostController?> { null }
-    val current: NavHostController
-        @Composable
-        get() = LocalNavController.current
-            ?: throw IllegalStateException("not found navController at CompositionLocal")
-
-    infix fun provides(navHostController: NavHostController): ProvidedValue<NavHostController?> =
-        LocalNavController.provides(navHostController)
-}
+val LocalNavController = compositionLocalOf<NavHostController> { error("null initial value ") }
