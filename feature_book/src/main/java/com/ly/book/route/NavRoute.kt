@@ -14,7 +14,7 @@ object NavRoute {
     const val PageLoginMain = "$Root/Login"
 
     const val PagePicPreview_Key = "urls"
-    const val PagePicPreview = "$Root/PicPreview"
+    private const val PagePicPreview = "$Root/PicPreview"
     const val PagePicPreviewWithKey = "$PagePicPreview/{$PagePicPreview_Key}"
 
     fun picPre(urls: List<String>): String = routeFormat(PagePicPreview, PicPreData(urls))

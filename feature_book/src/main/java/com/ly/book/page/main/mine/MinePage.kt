@@ -43,8 +43,8 @@ import com.ly.book.theme.colorGrayD1DDDF
 import com.ly.book.theme.colorGreen00D6D8
 import com.ly.book.theme.colorGreen00D6D8_10
 import com.ly.book.utils.PreviewProvideNavLocal
-import com.ly.book.utils.rippleClick
-import com.ly.book.utils.unRippleClick
+import com.ly.book.utils.clickWithRipple
+import com.ly.book.utils.clickWithoutRipple
 import com.ly.core_model.MainMenuItem
 import com.ly.utils.common.catchOrNull
 import kotlinx.coroutines.launch
@@ -54,7 +54,8 @@ import kotlin.math.roundToInt
 fun MinePage(
     mainViewModel: MainViewModel,
     mineViewModel: MineViewModel = hiltViewModel(),
-    goPicPre: (List<String>) -> Unit
+    goPicPre: (List<String>) -> Unit,
+    goModifyInfo: () -> Unit
 ) {
     val scaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = rememberBottomSheetState(
@@ -87,7 +88,7 @@ fun MinePage(
     BottomSheetScaffold(scaffoldState = scaffoldState, sheetContent = {
         BottomSheetContent(scaffoldState.bottomSheetState, mineViewModel, logout = {
             mineViewModel.dispatch(MineAction.Logout)
-        })
+        }, goModifyInfo = goModifyInfo)
     }, sheetPeekHeight = 300.dp, sheetShape = object : Shape {
         override fun createOutline(
             size: Size,
@@ -152,7 +153,7 @@ fun MinePage(
                         contentDescription = "avatar",
                         modifier = Modifier
                             .clip(CircleShape)
-                            .unRippleClick {
+                            .clickWithoutRipple {
                                 goPicPre(listOf(avatarUrl))
                             },
                         contentScale = ContentScale.Crop
@@ -229,7 +230,7 @@ fun MinePage(
                                 .align(Alignment.CenterHorizontally)
                                 .fillMaxWidth()
                         ) {
-                            val bookModel by remember(mineViewModel.state) {
+                            val bookModel by remember {
                                 derivedStateOf { mineViewModel.state.bookModel }
                             }
                             val cover = rememberAsyncImagePainter(
@@ -276,7 +277,7 @@ fun MinePage(
 
 @Composable
 private fun FollowItem(modifier: Modifier, title: String, count: Int, onClick: () -> Unit) {
-    Column(modifier = modifier.rippleClick(onClick)) {
+    Column(modifier = modifier.clickWithRipple(onClick)) {
         Text(text = title, fontSize = 12.sp, color = colorGrayD1DDDF, fontWeight = FontWeight.Bold)
         Text(
             text = count.toString(),
@@ -292,7 +293,8 @@ private fun FollowItem(modifier: Modifier, title: String, count: Int, onClick: (
 private fun BottomSheetContent(
     bottomSheetState: BottomSheetState,
     viewModel: MineViewModel,
-    logout: () -> Unit
+    logout: () -> Unit,
+    goModifyInfo: () -> Unit
 ) {
     val scrollState = rememberScrollState()
     val scope = rememberCoroutineScope()
@@ -305,7 +307,7 @@ private fun BottomSheetContent(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .width(50.dp)
-                .unRippleClick {
+                .clickWithoutRipple {
                     scope.launch {
                         with(bottomSheetState) {
                             if (isCollapsed) {
@@ -350,7 +352,7 @@ private fun BottomSheetContent(
             title = "账号"
         )
         MenuItem(title = "修改信息") {
-
+            goModifyInfo()
         }
         MenuItem(title = "分享你的用户卡片") {
 
@@ -384,7 +386,7 @@ private fun MenuItem(
         modifier = Modifier
             .height(45.dp)
             .fillMaxWidth()
-            .rippleClick(onClick)
+            .clickWithRipple(onClick)
             .padding(horizontal = 20.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
@@ -398,6 +400,6 @@ private fun MenuItem(
 @Composable
 fun MinePagePre() {
     PreviewProvideNavLocal {
-        MinePage(hiltViewModel(), hiltViewModel(), goPicPre = {})
+        MinePage(hiltViewModel(), hiltViewModel(), goPicPre = {}, goModifyInfo = {})
     }
 }

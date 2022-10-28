@@ -9,3 +9,8 @@ sealed class MainAction {
 sealed class MainEvent {
     data class BottomBarChanged(val index: Int) : MainEvent()
 }
+
+sealed class MainDialog {
+    object None : MainDialog()
+    object ModifyInfo : MainDialog()
+}

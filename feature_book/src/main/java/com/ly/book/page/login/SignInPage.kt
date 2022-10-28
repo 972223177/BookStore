@@ -24,7 +24,7 @@ import com.ly.book.theme.colorGrayAFC1C4
 import com.ly.book.theme.colorGreen00D6D8
 import com.ly.book.theme.colorGreen00D6D8_10
 import com.ly.book.utils.LocalNavController
-import com.ly.book.utils.rippleClick
+import com.ly.book.utils.clickWithRipple
 import com.ly.book.utils.toast
 import com.ly.book.utils.zeroBtnElevation
 
@@ -163,7 +163,7 @@ private fun SignInMenu(
                 text = "记住密码",
                 fontSize = 12.sp,
                 color = colorGrayAFC1C4,
-                modifier = Modifier.rippleClick {
+                modifier = Modifier.clickWithRipple {
                     rememberMe = !rememberMe
                 }
             )

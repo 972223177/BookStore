@@ -1,9 +1,11 @@
 package com.ly.core_request.local_logic
 
+import androidx.annotation.Keep
 import com.ly.core_db.bean.*
 import com.ly.core_db.helpers.BookDbHelper
 import com.ly.core_db.helpers.UserDbHelper
 
+@Keep
 object TestDbHelper {
 
     suspend fun initDb() {

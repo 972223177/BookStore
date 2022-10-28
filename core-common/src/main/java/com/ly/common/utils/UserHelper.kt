@@ -2,19 +2,18 @@ package com.ly.common.utils
 
 import android.content.Context
 import android.util.Log
-import androidx.annotation.Keep
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.ly.core_model.RememberInfo
 import com.ly.core_model.UserModel
 import com.ly.utils.base.appContext
 import com.ly.utils.base.launchAppScope
 import com.ly.utils.common.catchOrNull
 import com.ly.utils.common.globalJson
 import kotlinx.coroutines.flow.*
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 
@@ -60,6 +59,7 @@ object UserHelper {
     }
 
     suspend fun rememberMe(account: String, pwd: String) {
+        if (account.isEmpty() || pwd.isEmpty()) return
         dataStore.edit {
             val info = RememberInfo(account, pwd)
             //这里可以做加密
@@ -91,7 +91,4 @@ object UserHelper {
         }
     }
 
-    @Keep
-    @Serializable
-    data class RememberInfo(val account: String, val pwd: String)
 }

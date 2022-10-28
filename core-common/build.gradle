@@ -72,4 +72,5 @@ dependencies {
     kapt(Config.kapts.theRouter)
     api project(path: ':core-request')
     implementation(Config.deps.theRouter)
+    implementation(Config.deps.kotlinSerialization)
 }

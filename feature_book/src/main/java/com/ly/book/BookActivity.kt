@@ -3,10 +3,15 @@ package com.ly.book
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.remember
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -14,6 +19,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.gyf.immersionbar.ktx.immersionBar
+import com.ly.book.components.TopSheetDialog
+import com.ly.book.page.main.MainDialog
 import com.ly.book.page.main.MainPage
 import com.ly.book.page.other.PicPreviewPage
 import com.ly.book.page.other.WaitingPage
@@ -54,9 +61,32 @@ class BookActivity : AppCompatActivity() {
                     }
 
                     composable(NavRoute.PageMain) {
+                        var bottomSheetShow by remember { mutableStateOf(false) }
+                        val dialogState by remember { mutableStateOf<MainDialog>(MainDialog.None) }
                         MainPage(goPicPre = {
                             navController.navigate(NavRoute.picPre(it))
+                        }, goModifyInfo = {
+                            bottomSheetShow = true
+//                            navController.navigate(NavRoute.DialogModifyInfo)
                         })
+                        Box(modifier = Modifier.fillMaxSize()) {
+                            when(dialogState){
+                                MainDialog.ModifyInfo -> {
+
+                                }
+                                MainDialog.None -> {}
+                            }
+                            TopSheetDialog(visible = bottomSheetShow, onDismissRequest = {
+                                bottomSheetShow = false
+                            }) {
+                                Box(
+                                    modifier = Modifier.height(300.dp).fillMaxWidth()
+                                        .background(color = Color.White)
+                                ) {
+
+                                }
+                            }
+                        }
                     }
 
                     composable(

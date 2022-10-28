@@ -26,13 +26,13 @@ fun toast(msg: String) {
     }
 }
 
-fun Modifier.rippleClick(onClick: () -> Unit) = composed {
+fun Modifier.clickWithRipple(onClick: () -> Unit) = composed {
     clickable(interactionSource = remember {
         MutableInteractionSource()
     }, indication = rememberRipple(), onClick = onClick)
 }
 
-fun Modifier.unRippleClick(onClick: () -> Unit) = composed {
+fun Modifier.clickWithoutRipple(onClick: () -> Unit) = composed {
     clickable(onClick = onClick, indication = null, interactionSource = remember {
         MutableInteractionSource()
     })

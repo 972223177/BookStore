@@ -98,9 +98,10 @@ class Config {
     ]
 
     static classpaths = [
-            theRouter: "cn.therouter:plugin:$theRouterVersion", //therouter
-            protobuf : "com.google.protobuf:protobuf-gradle-plugin:$protobufVersion", //com.google.protobuf
-            hilt     : "com.google.dagger:hilt-android-gradle-plugin:$hiltVersion"
+            theRouter    : "cn.therouter:plugin:$theRouterVersion", //therouter
+            protobuf     : "com.google.protobuf:protobuf-gradle-plugin:$protobufVersion", //com.google.protobuf
+            hilt         : "com.google.dagger:hilt-android-gradle-plugin:$hiltVersion",
+            ktSerializate: "org.jetbrains.kotlin:kotlin-serialization:$ktVersion"
     ]
 
 }

@@ -16,7 +16,6 @@ import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -49,14 +48,18 @@ import com.ly.book.theme.colorGreen00D6D8
 import com.ly.book.utils.LocalNavController
 import com.ly.book.utils.PreviewProvideNavLocal
 import com.ly.book.utils.checkLogin
-import com.ly.book.utils.rippleClick
+import com.ly.book.utils.clickWithRipple
 import com.ly.common.utils.UserHelper
 import com.ly.core_model.MainMenuItem
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @Composable
-fun MainPage(viewModel: MainViewModel = hiltViewModel(), goPicPre: (List<String>) -> Unit) {
+fun MainPage(
+    viewModel: MainViewModel = hiltViewModel(),
+    goPicPre: (List<String>) -> Unit,
+    goModifyInfo: () -> Unit
+) {
     val pagerState = rememberPagerState()
     val scope = rememberCoroutineScope()
     val menuItems = remember {
@@ -145,7 +148,11 @@ fun MainPage(viewModel: MainViewModel = hiltViewModel(), goPicPre: (List<String>
                 MainMenuItem.Feed -> FeedPage()
                 MainMenuItem.Search -> SearchPage()
                 MainMenuItem.Favorite -> FavoritePage()
-                MainMenuItem.Mine -> MinePage(viewModel, goPicPre = goPicPre)
+                MainMenuItem.Mine -> MinePage(
+                    viewModel,
+                    goPicPre = goPicPre,
+                    goModifyInfo = goModifyInfo
+                )
             }
         }
     }
@@ -161,12 +168,12 @@ fun RowScope.BottomItemWrapper(
     Box(modifier = Modifier
         .weight(1f)
         .fillMaxHeight()
-        .rippleClick {
+        .clickWithRipple {
             onClick(index)
         }) {
         child()
-        val targetWidth by remember(currentIndex) {
-            derivedStateOf { if (currentIndex == index) 1f else 0f }
+        val targetWidth = remember(currentIndex) {
+            if (currentIndex == index) 1f else 0f
         }
         val paint = remember {
             Paint().apply {
@@ -211,13 +218,11 @@ private fun RowScope.BottomItem(
             verticalArrangement = Arrangement.Center,
             modifier = Modifier.fillMaxSize()
         ) {
-            val color by remember(currentIndex) {
-                derivedStateOf {
-                    if (index == currentIndex)
-                        colorGreen00D6D8
-                    else
-                        colorGrayD1DDDF
-                }
+            val color = remember(currentIndex) {
+                if (index == currentIndex)
+                    colorGreen00D6D8
+                else
+                    colorGrayD1DDDF
             }
             Icon(
                 imageVector = icon,
@@ -238,13 +243,11 @@ fun RowScope.BottomMineItem(currentIndex: Int, index: Int, onClick: (Int) -> Uni
             verticalArrangement = Arrangement.Center,
             modifier = Modifier.fillMaxSize()
         ) {
-            val color by remember(currentIndex) {
-                derivedStateOf {
-                    if (index == currentIndex)
-                        colorGreen00D6D8
-                    else
-                        colorGrayD1DDDF
-                }
+            val color = remember(currentIndex) {
+                if (index == currentIndex)
+                    colorGreen00D6D8
+                else
+                    colorGrayD1DDDF
             }
             val user by UserHelper.user.collectAsState(initial = null)
             if (user == null || user?.id == 0) {
@@ -284,6 +287,6 @@ fun RowScope.BottomMineItem(currentIndex: Int, index: Int, onClick: (Int) -> Uni
 @Composable
 fun MainPagePre() {
     PreviewProvideNavLocal {
-        MainPage(goPicPre = {})
+        MainPage(goPicPre = {}, goModifyInfo = {})
     }
 }

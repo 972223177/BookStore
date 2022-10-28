@@ -138,8 +138,10 @@ private class DialogDismissListener(dialogFragment: DialogFragment) :
     DialogInterface.OnDismissListener, Closeable {
     private val reference = WeakReference(dialogFragment)
 
-    override fun onDismiss(dialogInterface: DialogInterface) {
-        reference.get()?.onDismiss(dialogInterface)
+    override fun onDismiss(dialogInterface: DialogInterface?) {
+        dialogInterface?.let {
+            reference.get()?.onDismiss(it)
+        }
     }
 
     override fun close() {
@@ -151,8 +153,10 @@ private class DialogDismissListener(dialogFragment: DialogFragment) :
 private class DialogCancelListener(dialogFragment: DialogFragment) :
     DialogInterface.OnCancelListener, Closeable {
     private val reference = WeakReference(dialogFragment)
-    override fun onCancel(dialogInterface: DialogInterface) {
-        reference.get()?.onCancel(dialogInterface)
+    override fun onCancel(dialogInterface: DialogInterface?) {
+        dialogInterface?.let {
+            reference.get()?.onCancel(it)
+        }
     }
 
     override fun close() {

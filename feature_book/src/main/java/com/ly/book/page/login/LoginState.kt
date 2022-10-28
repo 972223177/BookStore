@@ -1,9 +1,9 @@
 package com.ly.book.page.login
 
 data class LoginState(
-    val name: String = "",
-    val account: String = "",
-    val pwd: String = "",
+    val name: String = "ly",
+    val account: String = "123",
+    val pwd: String = "123",
     val rememberMe: Boolean = false,
     val protocolAccept: Boolean = false
 )

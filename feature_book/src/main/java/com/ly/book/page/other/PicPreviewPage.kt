@@ -25,7 +25,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.ly.book.route.args.PicPreData
-import com.ly.book.utils.unRippleClick
+import com.ly.book.utils.clickWithoutRipple
 
 @Composable
 fun PicPreviewPage(argument: PicPreData, popup: () -> Unit) {
@@ -49,7 +49,7 @@ fun PicPreviewPage(argument: PicPreData, popup: () -> Unit) {
             count = argument.urls.size, modifier = Modifier
                 .padding(it)
                 .fillMaxSize()
-                .unRippleClick { popup() }, state = pageState
+                .clickWithoutRipple { popup() }, state = pageState
         ) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
 
